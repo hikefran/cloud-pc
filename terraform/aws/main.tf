@@ -60,7 +60,7 @@ resource "aws_security_group" "web-1" {
   }
 }
 resource "aws_security_group" "web-2" {
-  name        = "web"
+  name        = "webb"
   description = "Allow web inbound traffic"
   vpc_id      = aws_vpc.web.id
 
