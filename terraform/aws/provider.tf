@@ -14,13 +14,13 @@ terraform {
     }
   }
 
-  # backend "s3" {
-  #   bucket         = "tf-state-efs-bucket"
-  #   key            = "terraform.tfstate"
-  #   dynamodb_table = "tf-state-efs-table"
+  backend "s3" {
+    bucket         = "mydeyvin"
+    key            = "terraform.tfstate"
+    dynamodb_table = "db-deyvin"
     
-  #   region         = "us-east-1"
-  # }
+    region         = "us-east-1"
+  }
 
 }
 
