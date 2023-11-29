@@ -86,7 +86,7 @@ resource "aws_instance" "web-1" {
   availability_zone           = "us-east-1a"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.web-1.id
-  vpc_security_group_ids      = [aws_security_group.web.id]
+  vpc_security_group_ids      = [aws_security_group.web-2.id]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -108,7 +108,7 @@ resource "aws_instance" "web-2" {
   availability_zone           = "us-east-1a"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.web-1.id
-  vpc_security_group_ids      = [aws_security_group.web.id]
+  vpc_security_group_ids      = [aws_security_group.web-2.id]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -116,7 +116,7 @@ resource "aws_instance" "web-2" {
               yum install -y httpd
               systemctl start httpd
               systemctl enable httpd
-              echo '<h1>Página HTML própria do hike</h1>' | tee /var/www/html/index.html
+              echo '<h1>Página HTML própria do hike1</h1>' | tee /var/www/html/index.html
               EOF
 
   tags = {
@@ -129,7 +129,7 @@ resource "aws_instance" "web-3" {
   availability_zone           = "us-east-1b"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.web-2.id
-  vpc_security_group_ids      = [aws_security_group.web.id]
+  vpc_security_group_ids      = [aws_security_group.web-2.id]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -137,7 +137,7 @@ resource "aws_instance" "web-3" {
               yum install -y httpd
               systemctl start httpd
               systemctl enable httpd
-              echo '<h1>Página HTML própria do hike</h1>' | tee /var/www/html/index.html
+              echo '<h1>Página HTML própria do hike2</h1>' | tee /var/www/html/index.html
               EOF
 
   tags = {
@@ -150,7 +150,7 @@ resource "aws_instance" "web-4" {
   availability_zone           = "us-east-1b"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.web-2.id
-  vpc_security_group_ids      = [aws_security_group.web.id]
+  vpc_security_group_ids      = [aws_security_group.web-2.id]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -158,7 +158,7 @@ resource "aws_instance" "web-4" {
               yum install -y httpd
               systemctl start httpd
               systemctl enable httpd
-              echo '<h1>Página HTML própria do hike</h1>' | tee /var/www/html/index.html
+              echo '<h1>Página HTML própria do hike2</h1>' | tee /var/www/html/index.html
               EOF
 
   tags = {
@@ -170,7 +170,7 @@ resource "aws_lb" "lb" {
   name               = "lb-hike"
   load_balancer_type = "application"
   subnets            = [aws_subnet.web-1.id, aws_subnet.web-2.id]
-  security_groups    = [aws_security_group.web-2.id]
+  security_groups    = [aws_security_group.web-1.id]
 }
 
 resource "aws_lb_target_group" "tg" {
