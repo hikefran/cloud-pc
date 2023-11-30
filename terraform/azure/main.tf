@@ -112,33 +112,33 @@ resource "azurerm_subnet_network_security_group_association" "web-2" {
   subnet_id                 = azurerm_subnet.sub-2.id
   network_security_group_id = azurerm_network_security_group.web-2.id
 }
-# Public IP address for the Load Balancer
-# resource "azurerm_public_ip" "web" {
-#   name                = "public-ip"
-#   location            = azurerm_resource_group.rg-hikeee.location
-#   resource_group_name = azurerm_resource_group.rg-hikeee.name
-#   allocation_method   = "Static"
-# }
+#Public IP address for the Load Balancer
+resource "azurerm_public_ip" "web" {
+  name                = "public-ip"
+  location            = azurerm_resource_group.rg-hikeee.location
+  resource_group_name = azurerm_resource_group.rg-hikeee.name
+  allocation_method   = "Static"
+}
 
-# resource "azurerm_public_ip" "web_vm" {
-#   name                = "public-ip-vm"
-#   location            = azurerm_resource_group.rg-hikeee.location
-#   resource_group_name = azurerm_resource_group.rg-hikeee.name
-#   allocation_method   = "Dynamic"
-#   domain_name_label = "staticsite-vmm"
-# }
+resource "azurerm_public_ip" "web_vm" {
+  name                = "public-ip-vm"
+  location            = azurerm_resource_group.rg-hikeee.location
+  resource_group_name = azurerm_resource_group.rg-hikeee.name
+  allocation_method   = "Dynamic"
+  domain_name_label = "staticsite-vmm"
+}
 
-# # Load Balancer
-# resource "azurerm_lb" "web" {
-#   name                = "load-balancer"
-#   location            = azurerm_resource_group.web.location
-#   resource_group_name = azurerm_resource_group.web.name
+# Load Balancer
+resource "azurerm_lb" "web" {
+  name                = "load-balancer"
+  location            = azurerm_resource_group.rg-hikeee.location
+  resource_group_name = azurerm_resource_group.rg-hikeee.name
 
-#   frontend_ip_configuration {
-#     name                 = "public-ip"
-#     public_ip_address_id = azurerm_public_ip.web.id
-#   }
-# }
+  frontend_ip_configuration {
+    name                 = "public-ip"
+    public_ip_address_id = azurerm_public_ip.web.id
+  }
+}
 
 # # Load Balancer Backend Address Pool
 # resource "azurerm_lb_backend_address_pool" "web" {
