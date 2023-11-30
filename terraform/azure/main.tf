@@ -103,12 +103,12 @@ resource "azurerm_network_security_group" "web-2" {
 }
 
 # Associate NSG to subnet
-resource "azurerm_subnet_network_security_group_association" "web" {
+resource "azurerm_subnet_network_security_group_association" "web-1" {
   subnet_id                 = azurerm_subnet.sub-1.id
   network_security_group_id = azurerm_network_security_group.web-1.id
 }
 
-resource "azurerm_subnet_network_security_group_association" "web" {
+resource "azurerm_subnet_network_security_group_association" "web-2" {
   subnet_id                 = azurerm_subnet.sub-2.id
   network_security_group_id = azurerm_network_security_group.web-2.id
 }
