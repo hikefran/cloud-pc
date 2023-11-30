@@ -18,7 +18,7 @@ variable "subnet_names" {
 # Create a virtual network
 resource "azurerm_virtual_network" "vn-1" {
   name                = "vn-1-name"
-  address_space       = ["172.0.0.0/16"]
+  address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg-hikeee.location
   resource_group_name = azurerm_resource_group.rg-hikeee.name
   
@@ -30,7 +30,7 @@ resource "azurerm_subnet" "sub-1" {
   name                 = "subnet1-name"
   resource_group_name  = azurerm_resource_group.rg-hikeee.name
   virtual_network_name = azurerm_virtual_network.vn-1.name
-  address_prefixes     = ["172.0.2.0/24"]
+  address_prefixes     = ["10.0.2.0/24"]
 
 }
 
@@ -39,14 +39,14 @@ resource "azurerm_subnet" "sub-2" {
   name                 = "subnet2-name"
   resource_group_name  = azurerm_resource_group.rg-hikeee.name
   virtual_network_name = azurerm_virtual_network.vn-1.name
-  address_prefixes     = ["172.0.3.0/24"]
+  address_prefixes     = ["10.0.3.0/24"]
 }
 
 # Create a Network Security Group and rule
 resource "azurerm_network_security_group" "web-1" {
   name                = "network-security-group-name"
-  location            = azurerm_resource_group.web.location
-  resource_group_name = azurerm_resource_group.web.name
+  location            = azurerm_resource_group.rg-hikeee.location
+  resource_group_name = azurerm_resource_group.rg-hikeee.name
 
   security_rule {
     name                       = "HTTP"
@@ -60,10 +60,10 @@ resource "azurerm_network_security_group" "web-1" {
     destination_address_prefix = "*"
   }
 }
-resource "azurerm_network_security_group" "web" {
+resource "azurerm_network_security_group" "web-2" {
   name                = "network-security-group-name-2"
-  location            = azurerm_resource_group.web.location
-  resource_group_name = azurerm_resource_group.web.name
+  location            = azurerm_resource_group.rg-hikeee.location
+  resource_group_name = azurerm_resource_group.rg-hikeee.name
 
   security_rule {
     name                       = "HTTP"
@@ -104,28 +104,28 @@ resource "azurerm_network_security_group" "web" {
 
 # Associate NSG to subnet
 resource "azurerm_subnet_network_security_group_association" "web" {
-  subnet_id                 = azurerm_subnet.web.id
-  network_security_group_id = azurerm_network_security_group.web.id
+  subnet_id                 = azurerm_subnet.sub-1.id
+  network_security_group_id = azurerm_network_security_group.web-1.id
 }
 
 resource "azurerm_subnet_network_security_group_association" "web" {
-  subnet_id                 = azurerm_subnet.web.id
-  network_security_group_id = azurerm_network_security_group.web.id
+  subnet_id                 = azurerm_subnet.sub-2.id
+  network_security_group_id = azurerm_network_security_group.web-2.id
 }
 # Public IP address for the Load Balancer
 resource "azurerm_public_ip" "web" {
   name                = "public-ip"
-  location            = azurerm_resource_group.web.location
-  resource_group_name = azurerm_resource_group.web.name
+  location            = azurerm_resource_group.rg-hikeee.location
+  resource_group_name = azurerm_resource_group.rg-hikeee.name
   allocation_method   = "Static"
 }
 
 resource "azurerm_public_ip" "web_vm" {
   name                = "public-ip-vm"
-  location            = azurerm_resource_group.web.location
-  resource_group_name = azurerm_resource_group.web.name
+  location            = azurerm_resource_group.rg-hikeee.location
+  resource_group_name = azurerm_resource_group.rg-hikeee.name
   allocation_method   = "Dynamic"
-  domain_name_label = "staticsite-vm"
+  domain_name_label = "staticsite-vmm"
 }
 
 # Load Balancer
