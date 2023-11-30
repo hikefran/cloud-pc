@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg-hikeee" {
-  name     = "rg-deyvisnsns"
+  name     = "rg-deyvi-namao"
   location = "East US"
 }
 
